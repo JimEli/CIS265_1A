@@ -26,11 +26,16 @@
 *************************************************************************
 * Change Log:
 *   08/25/2017: Initial release. JME
+*   10/03/2017: Changed MSVC/GNU defines. JME
 *************************************************************************/
 #include <assert.h> 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifdef _MSC_VER
+#define sscanf sscanf_s
+#endif
 
 // Constant definitions.
 #define TAX_MULTIPLIER         1.05f    // Tax multiplier (float).
@@ -44,11 +49,9 @@ int main(void) {
 	float amount;                          // Converted string value of user input.
 	int attempts = MAXIMUM_INPUT_ATTEMPTS; // Input attempt counter.
 
-#ifdef __GNUC__
 	// Required to make eclipse console output work properly.
 	setvbuf(stdout, NULL, _IONBF, 0);
 	fflush(stdout);
-#endif
 
 	assert(attempts > 0); // Assert attempts valid non-zero, positive number.
 
@@ -72,11 +75,7 @@ int main(void) {
 				continue;
 
 			// Attempt to convert from string to float, and validate.
-#ifdef __GNUC__
 			if (sscanf(input, "%f", &amount)) {
-#elif _MSC_VER
-			if (sscanf_s(input, "%f", &amount)) {
-#endif
 				if (amount >= MIN_AMOUNT && amount <= MAX_AMOUNT) {
 					fprintf(stdout, "With tax added: $%0.2f\n", amount * TAX_MULTIPLIER);
 					break; // Exit.

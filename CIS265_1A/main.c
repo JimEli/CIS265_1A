@@ -53,30 +53,36 @@ int main(void) {
 	setvbuf(stdout, NULL, _IONBF, 0);
 	fflush(stdout);
 
-	assert(attempts > 0); // Assert attempts valid non-zero, positive number.
+	assert(attempts > 0); // Assert attempts = non-zero, positive number.
 
 	// Attempt only so many inputs.
 	while (attempts--) {
 		// Prompt and grab user input.
 		fputs("Enter an amount: ", stdout);
-		if (!fgets(input, sizeof input, stdin)) {
+		
+		if (!fgets(input, sizeof input, stdin)) 
+		{
 			fputs("\nFatal program error!\n", stderr);
 			exit(EXIT_FAILURE);
 		}
-		else if (!strchr(input, '\n')) {
+		else if (!strchr(input, '\n')) 
+		{
 			// input too long, eat remainder.
 			while (fgets(input, sizeof input, stdin) && !strchr(input, '\n'))
 				; // Empty body.
 			fputs("Too many characters input.\n", stdout);
 		}
-		else {
+		else 
+		{
 			// Catch special case of null input.
 			if (strlen(input) <= 1)
 				continue;
 
 			// Attempt to convert from string to float, and validate.
-			if (sscanf(input, "%f", &amount)) {
-				if (amount >= MIN_AMOUNT && amount <= MAX_AMOUNT) {
+			if (sscanf(input, "%f", &amount)) 
+			{
+				if (amount >= MIN_AMOUNT && amount <= MAX_AMOUNT) 
+				{
 					fprintf(stdout, "With tax added: $%0.2f\n", amount * TAX_MULTIPLIER);
 					break; // Exit.
 				}
